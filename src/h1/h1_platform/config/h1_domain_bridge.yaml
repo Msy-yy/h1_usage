@@ -1,0 +1,6 @@
+name: h1_domain_bridge
+from_domain: 0
+to_domain: 10
+topics:
+  sportmodestate:
+    type: unitree_hg/msg/LowState

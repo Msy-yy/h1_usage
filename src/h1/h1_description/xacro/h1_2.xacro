@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="h1"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Add original h1_description -->
+    <xacro:include filename="$(find h1_description)/xacro/h1_2/h1_2.urdf" />
+
+    <!-- Add Gazebo -->
+    <xacro:if value="$(optenv H1_2_GAZEBO 0)">
+        <xacro:include filename="$(find h1_description)/xacro/h1_2/h1_2_gazebo_control.xacro" />
+    </xacro:if>
+
+    <!-- Add Hands, Lidar, Depth-Camera -->
+    <xacro:include filename="$(find h1_description)/xacro/accessories.xacro" />
+
+</robot>

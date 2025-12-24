@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="d435i" params="xyz rpy parent">
+
+    <!-- Ouster Root -->
+    <joint name="d435i_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <parent link="${parent}" />
+      <child link="d435i" />
+    </joint>
+
+    <link name="d435i">
+      <visual>
+        <geometry>
+          <mesh filename="package://h1_description/meshes/sensors/os1_64.dae" />
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://h1_description/meshes/sensors/os1_64.dae" />
+        </geometry>
+      </collision>
+    </link>
+
+  </xacro:macro>
+
+</robot>

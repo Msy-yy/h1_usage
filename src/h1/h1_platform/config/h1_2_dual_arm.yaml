@@ -1,0 +1,56 @@
+/**:
+  h1_2_dual_arm_controller:
+    ros__parameters:
+      eth_interface: "eth0"
+      control_dt: 0.02
+      max_joint_velocity: 0.5
+      
+      # Per-joint gains (14 joints)
+      # Order: L_shoulder_pitch, L_shoulder_roll, L_shoulder_yaw, L_elbow,
+      #        L_wrist_roll, L_wrist_pitch, L_wrist_yaw,
+      #        R_shoulder_pitch, R_shoulder_roll, R_shoulder_yaw, R_elbow,
+      #        R_wrist_roll, R_wrist_pitch, R_wrist_yaw
+      kp: [120.0, 120.0, 80.0, 50.0, 50.0, 50.0, 50.0, 
+           120.0, 120.0, 80.0, 50.0, 50.0, 50.0, 50.0]
+      kd: [2.0, 2.0, 1.5, 1.0, 1.0, 1.0, 1.0, 
+           2.0, 2.0, 1.5, 1.0, 1.0, 1.0, 1.0]
+      
+      weight: 1.0
+
+      # Position limits (radians)
+      pos_limits_min: [-3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159,
+                       -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159, -3.14159]
+      pos_limits_max: [3.14159, 3.14159, 3.14159, 3.14159, 3.14159, 3.14159, 3.14159, 3.14159,
+                       3.14159, 3.14159, 3.14159, 3.14159, 3.14159, 3.14159]
+
+  h1_2_dual_arm_recorder:
+    ros__parameters:
+      eth_interface: "eth0"
+      control_dt: 0.02
+      max_joint_velocity: 0.3
+
+      # Playback gains (per joint)
+      # Order: L_shoulder_pitch, L_shoulder_roll, L_shoulder_yaw, L_elbow,
+      #        L_wrist_roll, L_wrist_pitch, L_wrist_yaw,
+      #        R_shoulder_pitch, R_shoulder_roll, R_shoulder_yaw, R_elbow,
+      #        R_wrist_roll, R_wrist_pitch, R_wrist_yaw
+      kp: [120.0, 120.0, 80.0, 60.0, 60.0, 60.0, 60.0,
+           120.0, 120.0, 80.0, 60.0, 60.0, 60.0, 60.0]
+      kd: [2.0, 2.0, 1.5, 1.0, 1.0, 1.0, 1.0, 
+           2.0, 2.0, 1.5, 1.0, 1.0, 1.0, 1.0]
+
+      # Idle gains (per joint)
+      idle_kp: [120.0, 120.0, 80.0, 50.0, 50.0, 50.0, 50.0, 
+                120.0, 120.0, 80.0, 50.0, 50.0, 50.0, 50.0]
+      idle_kd: [2.0, 2.0, 1.5, 1.0, 1.0, 1.0, 1.0, 
+                2.0, 2.0, 1.5, 1.0, 1.0, 1.0, 1.0]
+
+      # Record gains (per joint) - low stiffness for compliant recording
+      record_kp: [1.0, 1.0, 1.0, 1.5, 0.5, 0.5, 0.5,
+                  1.0, 1.0, 1.0, 1.5, 0.5, 0.5, 0.5]
+      record_kd: [0.1, 0.1, 0.1, 0.15, 0.05, 0.05, 0.05,
+                  0.1, 0.1, 0.1, 0.15, 0.05, 0.05, 0.05]
+
+      # Other params
+      weight: 1.0
+      save_directory: "/opt/mybotshop/h1_2_trajectories"

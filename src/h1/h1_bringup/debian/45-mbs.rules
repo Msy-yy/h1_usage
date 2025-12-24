@@ -1,0 +1,6 @@
+# Logitech
+SUBSYSTEM=="input", DRIVERS=="sony", SUBSYSTEMS=="hid", SYMLINK+="input/ps4", MODE="0666"
+SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c21f" SYMLINK+="input/logitech", MODE="0666"
+
+# Emlid M2
+SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="3032:0013", NAME="emlid0"

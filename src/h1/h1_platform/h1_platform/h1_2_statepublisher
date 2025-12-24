@@ -1,0 +1,339 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# Software License Agreement (BSD)
+#
+# @author    Salman Omar Sohail <support@mybotshop.de>
+# @copyright (c) 2025, MYBOTSHOP GmbH
+#
+# Redistribution and use in source and binary forms, with or without modification,
+# are not permitted without the express permission of MYBOTSHOP GmbH.
+
+import math
+import time
+import rclpy
+import tf2_ros
+
+from rclpy.node import Node
+from sensor_msgs.msg import BatteryState, JointState, Imu
+from nav_msgs.msg import Odometry
+
+from unitree_hg.msg import LowState, BmsState
+
+
+class H1StateController(Node):
+    def __init__(self):
+        """
+        Initializes the H1 State Publisher node.
+        Sets up parameters, subscribers, publishers, timers.
+        """
+        super().__init__('h1_statepublisher')
+        self.get_logger().info(self.colorize("Initializing H1 State Publisher", "yellow"))
+
+        # ---------------- Parameters ----------------
+        self.declare_parameters(
+            namespace='',
+            parameters=[
+                # topic name for Odometry msg
+                ('robot_odom_pub', 'odom'),
+                ('robot_odom_tf', 'domain_odom'),         # parent frame (odom)
+                # child frame (base_link)
+                ('robot_baselink_tf', 'base_link'),
+                ('robot_imu_pub', 'sensor/imu/data'),   # topic name for IMU msg
+                ('robot_imu_frame', 'imu_link'),        # frame for IMU data
+            ]
+        )
+        # Defaults if unset (no YAML required)
+        self.odom_topic = self.get_parameter(
+            'robot_odom_pub').get_parameter_value().string_value or 'odom'
+        self.odom_frame = self.get_parameter(
+            'robot_odom_tf').get_parameter_value().string_value or 'odom'
+        self.base_frame = self.get_parameter(
+            'robot_baselink_tf').get_parameter_value().string_value or 'base_link'
+        self.imu_topic = self.get_parameter(
+            'robot_imu_pub').get_parameter_value().string_value or 'sensor/imu/data'
+        self.imu_frame = self.get_parameter(
+            'robot_imu_frame').get_parameter_value().string_value or 'imu_link'
+
+        # ---------------- Hard-coded joint index map ----------------
+        # Maps JointState.name -> index in LowState.motor_state[]
+        self.joint_index_map = {
+            # Left leg
+            "left_hip_pitch_joint": 1,
+            "left_hip_roll_joint": 2,
+            "left_hip_yaw_joint": 0,
+            "left_knee_joint": 3,
+            "left_ankle_pitch_joint": 4,
+            "left_ankle_roll_joint": 5,
+            # Right leg
+            "right_hip_pitch_joint": 7,
+            "right_hip_roll_joint": 8,
+            "right_hip_yaw_joint": 6,
+            "right_knee_joint": 9,
+            "right_ankle_pitch_joint": 10,
+            "right_ankle_roll_joint": 11,
+            # Torso
+            "torso_joint": 12,
+            # Left arm
+            "left_shoulder_pitch_joint": 13,
+            "left_shoulder_roll_joint": 14,
+            "left_shoulder_yaw_joint": 15,
+            "left_elbow_joint": 16,
+            "left_wrist_roll_joint": 17,
+            "left_wrist_pitch_joint": 18,
+            "left_wrist_yaw_joint": 19,
+            # Right arm
+            "right_shoulder_pitch_joint": 20,
+            "right_shoulder_roll_joint": 21,
+            "right_shoulder_yaw_joint": 22,
+            "right_elbow_joint": 23,
+            "right_wrist_roll_joint": 24,
+            "right_wrist_pitch_joint": 25,
+            "right_wrist_yaw_joint": 26,
+        }
+
+        # ---------------- State flags/data ----------------
+        self.h1_flag = False
+        self.h1_motor_state = None
+        self.h1_battery = None
+        self.h1_imu_state = None
+
+        # ---------------- Subscribers ----------------
+        self.create_subscription(
+            LowState, 'lowstate', self.callback_state_contacts, 10)
+        self.create_subscription(BmsState, 'bmsstate', self.callback_bms, 10)
+
+        # ---------------- Publishers ----------------
+        self.publisher_jointstate = self.create_publisher(
+            JointState, 'domain_bridge/joint_states', 10)
+        self.pub_data_jointstate = JointState()
+
+        self.publisher_battery = self.create_publisher(
+            BatteryState, 'sensor/battery/state', 10)
+
+        self.publisher_odom = self.create_publisher(
+            Odometry, self.odom_topic, 10)
+        self.pub_data_odom = Odometry()
+
+        self.publisher_imu = self.create_publisher(
+            Imu, self.imu_topic, 10)
+
+        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
+
+        # ---------------- Startup tracking ----------------
+        self.startup_time = time.time()
+        self.startup_wait = 3.0
+
+        # ---------------- Timers ----------------
+        self.create_timer(0.01, self.update_joint_states)   # 100 Hz
+        self.create_timer(0.01, self.update_imu_data)       # 100 Hz
+        self.create_timer(2.0,  self.update_battery_state)  # 0.5 Hz
+
+        self.get_logger().info(self.colorize("Initialization Complete!", "yellow"))
+
+    # ---------------- Callbacks ----------------
+    def callback_state_contacts(self, data: LowState):
+        self.h1_flag = True
+        self.h1_motor_state = data.motor_state
+        self.h1_imu_state = data.imu_state
+        self.get_logger().info(self.colorize(
+            f"LowState received: {len(self.h1_motor_state)} motors", "blue"), once=True)
+        if len(self.h1_motor_state) > 0:
+            m0 = self.h1_motor_state[0]
+            self.get_logger().info(self.colorize(
+                f"Motor[0] q={m0.q:.3f} dq={m0.dq:.3f} tau={m0.tau_est:.3f}", "blue"), once=True)
+
+        # Log IMU data reception
+        if self.h1_imu_state is not None:
+            self.get_logger().info(self.colorize(
+                f"IMU data received - Accel: [{self.h1_imu_state.accelerometer[0]:.3f}, "
+                f"{self.h1_imu_state.accelerometer[1]:.3f}, {self.h1_imu_state.accelerometer[2]:.3f}]", "blue"), once=True)
+
+    def callback_bms(self, data: BmsState):
+        self.h1_battery = data
+
+    # ---------------- JointState Publisher ----------------
+    def update_joint_states(self):
+        msg = self.pub_data_jointstate
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = self.base_frame
+
+        joint_names = [
+            # Left leg
+            "left_hip_pitch_joint", "left_hip_roll_joint", "left_hip_yaw_joint",
+            "left_knee_joint", "left_ankle_pitch_joint", "left_ankle_roll_joint",
+            # Right leg
+            "right_hip_pitch_joint", "right_hip_roll_joint", "right_hip_yaw_joint",
+            "right_knee_joint", "right_ankle_pitch_joint", "right_ankle_roll_joint",
+            # Torso
+            "torso_joint",
+            # Left arm
+            "left_shoulder_pitch_joint", "left_shoulder_roll_joint", "left_shoulder_yaw_joint",
+            "left_elbow_joint", "left_wrist_roll_joint", "left_wrist_pitch_joint", "left_wrist_yaw_joint",
+            # Right arm
+            "right_shoulder_pitch_joint", "right_shoulder_roll_joint", "right_shoulder_yaw_joint",
+            "right_elbow_joint", "right_wrist_roll_joint", "right_wrist_pitch_joint", "right_wrist_yaw_joint"
+        ]
+        msg.name = joint_names
+
+        n = len(joint_names)
+        msg.position = [0.0] * n
+        msg.velocity = [0.0] * n
+        msg.effort = [0.0] * n
+
+        if not self.h1_flag or self.h1_motor_state is None:
+            if time.time() - self.startup_time > self.startup_wait:
+                self.get_logger().error(self.colorize(
+                    "No H1 joint data yet (publishing zeros).", "orange"), throttle_duration_sec=5)
+        else:
+            self.assign_joint_states_from_map()
+
+        self.publisher_jointstate.publish(msg)
+
+    def assign_joint_states_from_map(self):
+        motors = self.h1_motor_state
+        mcount = len(motors)
+        warned = False
+
+        for i, jn in enumerate(self.pub_data_jointstate.name):
+            if jn not in self.joint_index_map:
+                if not warned:
+                    self.get_logger().warn(self.colorize(
+                        f"Joint '{jn}' missing in hard-coded joint_index_map; publishing zero.", "orange"))
+                    warned = True
+                continue
+
+            idx = self.joint_index_map[jn]
+            if idx < 0 or idx >= mcount:
+                self.get_logger().warn(self.colorize(
+                    f"Index {idx} for '{jn}' out of range 0..{mcount-1}; publishing zero.", "orange"))
+                continue
+
+            m = motors[idx]
+            self.pub_data_jointstate.position[i] = float(m.q)
+            self.pub_data_jointstate.velocity[i] = float(m.dq)
+            self.pub_data_jointstate.effort[i] = float(m.tau_est)
+
+        self.get_logger().info(self.colorize(
+            "H1 JointState updated from LowState.", "green"), once=True)
+
+    # ---------------- IMU Publisher ----------------
+    def update_imu_data(self):
+        if not self.h1_flag or self.h1_imu_state is None:
+            if time.time() - self.startup_time > self.startup_wait:
+                self.get_logger().error(self.colorize(
+                    "No H1 IMU data yet.", "orange"), throttle_duration_sec=5)
+            return
+
+        self.get_logger().info(self.colorize(
+            "H1 IMU Publisher Activated", "green"), once=True)
+
+        msg = Imu()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = self.imu_frame
+
+        # Orientation (quaternion)
+        # Assuming the IMU state has quaternion data as [w, x, y, z]
+        msg.orientation.w = float(self.h1_imu_state.quaternion[0])
+        msg.orientation.x = float(self.h1_imu_state.quaternion[1])
+        msg.orientation.y = float(self.h1_imu_state.quaternion[2])
+        msg.orientation.z = float(self.h1_imu_state.quaternion[3])
+
+
+        # Angular velocity (rad/s)
+        msg.angular_velocity.x = float(self.h1_imu_state.gyroscope[0])
+        msg.angular_velocity.y = float(self.h1_imu_state.gyroscope[1])
+        msg.angular_velocity.z = float(self.h1_imu_state.gyroscope[2])
+
+        # Linear acceleration (m/s²)
+        msg.linear_acceleration.x = float(
+            self.h1_imu_state.accelerometer[0])
+        msg.linear_acceleration.y = float(
+            self.h1_imu_state.accelerometer[1])
+        msg.linear_acceleration.z = float(
+            self.h1_imu_state.accelerometer[2])
+
+        # quat = [
+        #     msg.orientation.x,
+        #     msg.orientation.y,
+        #     msg.orientation.z,
+        #     msg.orientation.w
+        # ]
+
+        # roll, pitch, yaw = self.quat_to_euler(*quat)
+        # roll_deg = math.degrees(roll)
+        # pitch_deg = math.degrees(pitch)
+        # yaw_deg = math.degrees(yaw)
+        # self.get_logger().info(f"IMU: Roll: {roll_deg:.2f}°, Pitch: {pitch_deg:.2f}°, Yaw: {yaw_deg:.2f}°")
+        
+        self.publisher_imu.publish(msg)
+
+    def quat_to_euler(self, x, y, z, w):
+        # roll (x-axis rotation)
+        t0 = +2.0 * (w * x + y * z)
+        t1 = +1.0 - 2.0 * (x * x + y * y)
+        roll = math.atan2(t0, t1)
+
+        # pitch (y-axis rotation)
+        t2 = +2.0 * (w * y - z * x)
+        t2 = +1.0 if t2 > +1.0 else (-1.0 if t2 < -1.0 else t2)  # clamp
+        pitch = math.asin(t2)
+
+        # yaw (z-axis rotation)
+        t3 = +2.0 * (w * z + x * y)
+        t4 = +1.0 - 2.0 * (y * y + z * z)
+        yaw = math.atan2(t3, t4)
+
+        return roll, pitch, yaw
+    
+    # ---------------- Battery Publisher ----------------
+    def update_battery_state(self):
+        if not self.h1_battery:
+            return
+
+        self.get_logger().info(self.colorize(
+            "H1 Battery Publisher Activated", "green"), once=True)
+
+        msg = BatteryState()
+        msg.header.stamp = self.get_clock().now().to_msg()
+
+        voltages = [v / 1000.0 for v in self.h1_battery.cell_vol if v > 0]
+        msg.voltage = sum(voltages) if voltages else 0.0
+
+        msg.current = self.h1_battery.current / 1000.0
+        msg.percentage = self.h1_battery.soc / 100.0
+        msg.charge = msg.percentage * msg.voltage
+
+        msg.power_supply_status = BatteryState.POWER_SUPPLY_STATUS_DISCHARGING
+        msg.power_supply_health = BatteryState.POWER_SUPPLY_HEALTH_GOOD
+        msg.power_supply_technology = BatteryState.POWER_SUPPLY_TECHNOLOGY_LION
+        msg.present = True
+
+        self.publisher_battery.publish(msg)
+
+    # ---------------- Utils ----------------
+    @staticmethod
+    def colorize(text: str, color: str) -> str:
+        codes = {'green': '\033[92m', 'yellow': '\033[93m', 'orange': '\033[38;5;208m',
+                 'blue': '\033[94m', 'red': '\033[91m'}
+        return f"{codes.get(color, '')}{text}\033[0m"
+
+    def destroy_node(self):
+        self.get_logger().info(self.colorize("H1 State Publisher is shutting down", "red"))
+        super().destroy_node()
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    h1_state = H1StateController()
+    try:
+        rclpy.spin(h1_state)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        h1_state.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,9 @@
+/**:
+    ros__parameters: 
+        reach_rs_host_or_ip: '192.168.2.15'
+        reach_rs_port: '9001'
+        reach_rs_frame_id: 'reach_rs'
+        fix_timeout: '0.5'
+        time_ref_source: ''
+        useRMC: False
+        covariance_matrix: ''

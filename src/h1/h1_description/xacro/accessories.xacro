@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot name="h1"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <link name="base_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <box size="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="base_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 1.0" />
+        <parent link="base_link" />
+        <child link="pelvis" />
+    </joint>
+
+    <!-- Add dex_3 hand -->
+    <!-- <xacro:include filename="$(find h1_description)/xacro/dex/dex3_1_r.urdf" />
+    <xacro:include filename="$(find h1_description)/xacro/dex/dex3_1_l.urdf" /> -->
+
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Sensors -->
+    <!-- Emlid M2 -->
+    <!-- <xacro:include filename="$(find h1_description)/xacro/sensors/emlid_m2.xacro" />
+    <xacro:emlid xyz='0.05 0 1.78' rpy='0 0 0' parent='base_link' /> -->
+
+    <!-- Ouster -->
+    <!-- <xacro:include filename="$(find h1_description)/xacro/sensors/ouster.xacro" />
+    <xacro:os_sensor xyz='-0.005 0 -0.04' rpy='3.14 0 0' parent='lidar_link' /> -->
+
+    <!-- Intel Realsense D435i -->
+    <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro" />
+    <xacro:sensor_d435i name="d435i" parent="camera_link" use_nominal_extrinsics="false">
+        <origin xyz="-0.015 -0.02 -0.015" rpy="0.0349066 0 0"/>
+    </xacro:sensor_d435i>
+
+    <!-- ZED2i -->
+    <!-- <xacro:include filename="$(find h1_description)/xacro/sensors/zed_bracket.xacro" />
+    <xacro:include filename="$(find h1_description)/xacro/sensors/zed2i.xacro" />
+    <xacro:zed_bracket xyz='0 0 1.475' rpy='0 0 0' parent='base_link' />
+    <xacro:zed2_custom xyz='0.12 -0.02 0.04' rpy='0 0 0' parent='zed_bracket_link' /> -->
+
+</robot>

@@ -1,0 +1,24 @@
+/**:
+  h1_highroscontrol:
+    ros__parameters:
+      eth: "eth0"
+
+  h1_statepublisher:
+    ros__parameters:
+      robot_odom_pub: odom
+      robot_odom_tf: domain_odom
+      robot_baselink_tf: base_link
+
+  h1_video_publisher:
+    ros__parameters:
+      group: "230.1.1.1"
+      port: 1720
+      iface: "eth0"
+      decoder: "avdec_h264"
+      image_topic: "d435i/image_raw"
+      frame_id: "d435_link"
+      latency_ms: 10
+      qos_depth: 1
+      drop_old: true
+      sync: false
+      publish_compressed: true

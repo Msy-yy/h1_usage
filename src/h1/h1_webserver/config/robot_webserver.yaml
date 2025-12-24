@@ -1,0 +1,40 @@
+#@author    Salman Omar Sohail <support@mybotshop.de>
+#@copyright (c) 2025, MYBOTSHOP GmbH, Inc., All rights reserved.
+
+/**:
+  ros__parameters:
+    robot_map_topic: "map"
+    robot_cmd_vel: "webserver/cmd_vel"
+    robot_e_stop: "e_stop"
+    robot_gps_lat: 50.9533
+    robot_gps_lon: 6.60266
+    robot_password: "Unitree0408"
+    robot_gps_topic: "emlid/fix"
+    robot_battery_topic: "sensor/battery/state"
+    robot_webserver: "h1-webserver"
+    robot_max_linear_velocity: 0.1
+    robot_max_angular_velocity: 0.1
+    robot_home_dir: "/home/unitree"
+    robot_rosbag_dir: "/opt/mybotshop/bags/"
+    robot_rosbag_storage: 1000000000
+    robot_rosbag_duration: 1800
+    robot_services:
+      [
+      # "h1-emlid",
+      "h1-d435i",
+      # "h1-ouster",
+      # "h1-arm-record",
+      "h1-kiss-odom",
+      "h1-webserver",
+      "h1-twist-mux",
+      "h1-description",
+      "h1-logitechf710",
+      "h1-domain-bridge",
+      "h1-state-publisher",
+      "h1-highlevel-ros-controller",
+      ]
+    web_security: true
+    web_user: "admin"
+    web_password: "mybotshop"
+    web_server_ip: "0.0.0.0"
+    web_server_port: 9000

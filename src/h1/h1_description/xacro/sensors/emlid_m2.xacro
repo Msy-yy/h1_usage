@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="emlid" params="xyz rpy parent">
+
+    <!-- Emlid Root -->
+    <joint name="reach_rs_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <parent link="${parent}" />
+      <child link="reach_rs" />
+    </joint>
+
+    <link name="reach_rs">
+      <visual>
+        <geometry>
+          <mesh filename="package://h1_description/meshes/sensors/reachm2_antenna.dae" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.025" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.02" length="0.08"/>
+        </geometry>
+      </collision>
+    </link>
+
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,5 @@
+<library path="h1_platform">
+  <class name="h1_platform/H1ArmPositionHardware" type="h1_platform::H1ArmPositionHardware" base_class_type="hardware_interface::SystemInterface">
+    <description>Unitree H1 dual-arm hardware interface (position control).</description>
+  </class>
+</library>

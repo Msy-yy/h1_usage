@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro name="zed2_custom" params="xyz rpy parent">
+    <xacro:arg name="camera_name"   default="zed2i" />
+    <xacro:arg name="camera_model"  default="zed2i" />
+    <xacro:arg name="gnss_frame"    default="" />
+    
+    <xacro:include filename="$(find h1_description)/xacro/sensors/zed_macro.xacro" />
+    <xacro:zed_camera name="$(arg camera_name)" model="$(arg camera_model)" parent="${parent}">
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </xacro:zed_camera>
+  </xacro:macro>
+</robot>

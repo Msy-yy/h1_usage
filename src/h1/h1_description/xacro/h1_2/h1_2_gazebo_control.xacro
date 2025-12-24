@@ -1,0 +1,666 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </hardware>
+
+        <!-- Torso -->
+        <joint name="torso_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Left leg (L) -->
+        <joint name="left_hip_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_hip_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_hip_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_knee_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_ankle_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_ankle_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Right leg (R) -->
+        <joint name="right_hip_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_hip_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_hip_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_knee_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_ankle_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_ankle_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Left arm -->
+        <joint name="left_shoulder_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_shoulder_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_shoulder_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_elbow_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_wrist_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_wrist_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="left_wrist_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Right arm -->
+        <joint name="right_shoulder_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_shoulder_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_shoulder_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_elbow_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_wrist_roll_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_wrist_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="right_wrist_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Hands (command only non-mimic DOFs) -->
+        <!-- Left hand -->
+        <joint name="L_thumb_proximal_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="L_thumb_proximal_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="L_index_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="L_middle_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="L_ring_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="L_pinky_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+
+        <!-- Right hand -->
+        <joint name="R_thumb_proximal_yaw_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="R_thumb_proximal_pitch_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="R_index_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="R_middle_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="R_ring_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="R_pinky_proximal_joint">
+            <command_interface name="position"/>
+            <command_interface name="effort"/>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+    </ros2_control>
+
+
+    <gazebo>
+
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <robot_param>robot_description</robot_param>
+            <robot_param_server>robot_state_publisher</robot_param_server>
+            <parameters>$(find h1_description)/config/h1_2_ros2_controller_gazebo.yaml</parameters>
+            <joint_state_interface_name>joint_states</joint_state_interface_name>
+        </plugin>
+        <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+            <topic>joint_states</topic>
+            <!-- Torso -->
+            <joint_name>torso_joint</joint_name>
+
+            <!-- Left leg -->
+            <joint_name>left_hip_yaw_joint</joint_name>
+            <joint_name>left_hip_pitch_joint</joint_name>
+            <joint_name>left_hip_roll_joint</joint_name>
+            <joint_name>left_knee_joint</joint_name>
+            <joint_name>left_ankle_pitch_joint</joint_name>
+            <joint_name>left_ankle_roll_joint</joint_name>
+
+            <!-- Right leg -->
+            <joint_name>right_hip_yaw_joint</joint_name>
+            <joint_name>right_hip_pitch_joint</joint_name>
+            <joint_name>right_hip_roll_joint</joint_name>
+            <joint_name>right_knee_joint</joint_name>
+            <joint_name>right_ankle_pitch_joint</joint_name>
+            <joint_name>right_ankle_roll_joint</joint_name>
+
+            <!-- Left arm -->
+            <joint_name>left_shoulder_pitch_joint</joint_name>
+            <joint_name>left_shoulder_roll_joint</joint_name>
+            <joint_name>left_shoulder_yaw_joint</joint_name>
+            <joint_name>left_elbow_joint</joint_name>
+            <joint_name>left_wrist_roll_joint</joint_name>
+            <joint_name>left_wrist_pitch_joint</joint_name>
+            <joint_name>left_wrist_yaw_joint</joint_name>
+
+            <!-- Right arm -->
+            <joint_name>right_shoulder_pitch_joint</joint_name>
+            <joint_name>right_shoulder_roll_joint</joint_name>
+            <joint_name>right_shoulder_yaw_joint</joint_name>
+            <joint_name>right_elbow_joint</joint_name>
+            <joint_name>right_wrist_roll_joint</joint_name>
+            <joint_name>right_wrist_pitch_joint</joint_name>
+            <joint_name>right_wrist_yaw_joint</joint_name>
+
+            <!-- Left hand (include mimics so their states appear) -->
+            <joint_name>L_thumb_proximal_yaw_joint</joint_name>
+            <joint_name>L_thumb_proximal_pitch_joint</joint_name>
+            <joint_name>L_thumb_intermediate_joint</joint_name>
+            <joint_name>L_thumb_distal_joint</joint_name>
+            <joint_name>L_index_proximal_joint</joint_name>
+            <joint_name>L_index_intermediate_joint</joint_name>
+            <joint_name>L_middle_proximal_joint</joint_name>
+            <joint_name>L_middle_intermediate_joint</joint_name>
+            <joint_name>L_ring_proximal_joint</joint_name>
+            <joint_name>L_ring_intermediate_joint</joint_name>
+            <joint_name>L_pinky_proximal_joint</joint_name>
+            <joint_name>L_pinky_intermediate_joint</joint_name>
+
+            <!-- Right hand (include mimics) -->
+            <joint_name>R_thumb_proximal_yaw_joint</joint_name>
+            <joint_name>R_thumb_proximal_pitch_joint</joint_name>
+            <joint_name>R_thumb_intermediate_joint</joint_name>
+            <joint_name>R_thumb_distal_joint</joint_name>
+            <joint_name>R_index_proximal_joint</joint_name>
+            <joint_name>R_index_intermediate_joint</joint_name>
+            <joint_name>R_middle_proximal_joint</joint_name>
+            <joint_name>R_middle_intermediate_joint</joint_name>
+            <joint_name>R_ring_proximal_joint</joint_name>
+            <joint_name>R_ring_intermediate_joint</joint_name>
+            <joint_name>R_pinky_proximal_joint</joint_name>
+            <joint_name>R_pinky_intermediate_joint</joint_name>
+        </plugin>
+    </gazebo>
+
+    <!-- IMU -->
+    <gazebo reference="imu_link">
+        <sensor type="imu" name="imu">
+            <always_on>true</always_on>
+            <update_rate>100</update_rate>
+            <visualize>true</visualize>
+            <gz_frame_id>imu_link</gz_frame_id>
+            <topic>sensors/imu/data</topic>
+        </sensor>
+    </gazebo>
+
+    <!-- Depth Camera -->
+    <xacro:macro name="depth_camera" params="name update_rate:=30.0 image_height:=480 image_width:=640">
+        <gazebo reference="${name}_link">
+            <sensor name="${name}" type="rgbd_camera">
+                <camera>
+                    <horizontal_fov>1.25</horizontal_fov>
+                    <image>
+                        <width>${image_width}</width>
+                        <height>${image_height}</height>
+                    </image>
+                    <clip>
+                        <near>0.3</near>
+                        <far>100</far>
+                    </clip>
+                    <gz_frame_id>${name}_link</gz_frame_id>
+                    <optical_frame_id>${name}_color_optical_frame</optical_frame_id>
+                </camera>
+                <always_on>1</always_on>
+                <update_rate>${update_rate}</update_rate>
+                <visualize>true</visualize>
+                <gz_frame_id>${name}_link</gz_frame_id>
+                <topic>sensors/${name}</topic>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+    <xacro:depth_camera name="d435i" update_rate="30.0" image_height="480" image_width="640" />
+
+    <!-- GNSS -->
+    <xacro:macro name="gnss" params="name">
+        <gazebo reference="${name}">
+            <sensor name="${name}" type="navsat">
+                <always_on>1</always_on>
+                <update_rate>10.0</update_rate>
+                <gz_frame_id>reach_rs</gz_frame_id>
+                <topic>sensors/${name}/navsat</topic>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+    <xacro:gnss name='reach_rs'/>
+
+    <!-- Lidar -->
+    <xacro:macro name="lidar" params="name h_samples:=2048 h_min:=${-3.14159} h_max:=${3.14159} v_samples:=128 v_min:=${-21.2 * 3.14159/180} v_max:=${21.2 * 3.14159/180} update_rate:=10 min_range:=0.5 max_range:=200.0">
+        <gazebo reference="${name}">
+            <sensor name="${name}" type="gpu_lidar">
+                <always_on>true</always_on>
+                <visualize>false</visualize>
+                <update_rate>${update_rate}</update_rate>
+                <gz_frame_id>${name}</gz_frame_id>
+                <topic>/sensors/${name}</topic>
+                <lidar>
+                    <scan>
+                        <horizontal>
+                            <samples>${h_samples}</samples>
+                            <resolution>1</resolution>
+                            <min_angle>${h_min}</min_angle>
+                            <max_angle>${h_max}</max_angle>
+                        </horizontal>
+                        <vertical>
+                            <samples>${v_samples}</samples>
+                            <resolution>1</resolution>
+                            <min_angle>${v_min}</min_angle>
+                            <max_angle>${v_max}</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>${min_range}</min>
+                        <max>${max_range}</max>
+                        <resolution>0.01</resolution>
+                    </range>
+                </lidar>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+    <xacro:lidar name="os_sensor" />
+
+    <!-- ===== TORSO / UPPER BODY ===== -->
+    <gazebo reference="pelvis">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+    </gazebo>
+
+    <gazebo reference="torso_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+
+    <!-- Sensors / accessories (non-contact, low friction) -->
+    <gazebo reference="imu_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+    </gazebo>
+    <gazebo reference="camera_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+    </gazebo>
+    <gazebo reference="lidar_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+    </gazebo>
+    <gazebo reference="logo_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+    </gazebo>
+
+    <!-- ===== LEFT ARM ===== -->
+    <gazebo reference="left_shoulder_pitch_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+    </gazebo>
+    <gazebo reference="left_shoulder_roll_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="left_shoulder_yaw_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="left_elbow_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="left_wrist_roll_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="left_wrist_pitch_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="left_wrist_yaw_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+
+    <!-- ===== RIGHT ARM ===== -->
+    <gazebo reference="right_shoulder_pitch_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+    </gazebo>
+    <gazebo reference="right_shoulder_roll_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="right_shoulder_yaw_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="right_elbow_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="right_wrist_roll_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="right_wrist_pitch_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+    <gazebo reference="right_wrist_yaw_link">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <self_collide>1</self_collide>
+    </gazebo>
+
+    <!-- ===== Foot Contact ===== -->
+    <gazebo reference="left_ankle_roll_joint">
+        <mu1>0.6</mu1>
+        <mu2>0.6</mu2>
+        <self_collide>1</self_collide>
+        <kp>100000.0</kp>
+        <kd>1000.0</kd>
+    </gazebo>
+
+    <gazebo reference="right_ankle_roll_joint">
+        <mu1>0.6</mu1>
+        <mu2>0.6</mu2>
+        <self_collide>1</self_collide>
+        <kp>100000.0</kp>
+        <kd>1000.0</kd>
+    </gazebo>
+
+    <!-- ===== Debug ===== -->
+    <gazebo reference="pelvis">
+        <gravity>false</gravity>
+    </gazebo>
+    <!-- <gazebo>
+        <static>true</static>
+    </gazebo> -->
+
+</robot>

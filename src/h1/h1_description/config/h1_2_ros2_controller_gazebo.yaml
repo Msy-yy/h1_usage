@@ -1,0 +1,168 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+    use_sim_time: true
+
+    joint_effort_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_effort_command_controller:
+      type: effort_controllers/JointGroupEffortController
+
+joint_effort_command_controller:
+  ros__parameters:
+    joints:
+      - torso_joint
+      - left_hip_yaw_joint
+      - left_hip_pitch_joint
+      - left_hip_roll_joint
+      - left_knee_joint
+      - left_ankle_pitch_joint
+      - left_ankle_roll_joint
+      - right_hip_yaw_joint
+      - right_hip_pitch_joint
+      - right_hip_roll_joint
+      - right_knee_joint
+      - right_ankle_pitch_joint
+      - right_ankle_roll_joint
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+
+
+joint_effort_controller:
+  ros__parameters:
+    joints:
+      # Torso
+      - torso_joint
+
+      # Left leg
+      - left_hip_yaw_joint
+      - left_hip_pitch_joint
+      - left_hip_roll_joint
+      - left_knee_joint
+      - left_ankle_pitch_joint
+      - left_ankle_roll_joint
+
+      # Right leg
+      - right_hip_yaw_joint
+      - right_hip_pitch_joint
+      - right_hip_roll_joint
+      - right_knee_joint
+      - right_ankle_pitch_joint
+      - right_ankle_roll_joint
+
+      # Left arm
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+
+      # Right arm
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+
+      # # Left hand (non-mimic only)
+      # - L_thumb_proximal_yaw_joint
+      # - L_thumb_proximal_pitch_joint
+      # - L_index_proximal_joint
+      # - L_middle_proximal_joint
+      # - L_ring_proximal_joint
+      # - L_pinky_proximal_joint
+
+      # # Right hand (non-mimic only)
+      # - R_thumb_proximal_yaw_joint
+      # - R_thumb_proximal_pitch_joint
+      # - R_index_proximal_joint
+      # - R_middle_proximal_joint
+      # - R_ring_proximal_joint
+      # - R_pinky_proximal_joint
+
+    # Controller I/O
+    command_interfaces: [effort]
+    state_interfaces: [position, velocity]
+
+    # Optional but recommended controller settings
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: true
+    constraints:
+      goal_time: 0.5
+      stopped_velocity_tolerance: 0.02
+      default_tolerance:
+        position: 0.02
+        velocity: 0.05
+        acceleration: 0.1
+
+    gains:
+      # Torso
+      torso_joint:            {p: 100.0, i: 0.0, d: 1.0}
+
+      # Left leg
+      left_hip_yaw_joint:     {p: 120.0, i: 0.0, d: 1.0}
+      left_hip_pitch_joint:   {p: 120.0, i: 0.0, d: 1.0}
+      left_hip_roll_joint:    {p: 120.0, i: 0.0, d: 1.0}
+      left_knee_joint:        {p: 200.0, i: 0.0, d: 2.0}
+      left_ankle_pitch_joint: {p: 120.0, i: 0.0, d: 1.0}
+      left_ankle_roll_joint:  {p: 120.0, i: 0.0, d: 1.0}
+
+      # Right leg
+      right_hip_yaw_joint:     {p: 120.0, i: 0.0, d: 1.0}
+      right_hip_pitch_joint:   {p: 120.0, i: 0.0, d: 1.0}
+      right_hip_roll_joint:    {p: 120.0, i: 0.0, d: 1.0}
+      right_knee_joint:        {p: 200.0, i: 0.0, d: 2.0}
+      right_ankle_pitch_joint: {p: 120.0, i: 0.0, d: 1.0}
+      right_ankle_roll_joint:  {p: 120.0, i: 0.0, d: 1.0}
+
+      # Left arm
+      left_shoulder_pitch_joint: {p: 120.0, i: 0.1, d: 2.0}
+      left_shoulder_roll_joint:  {p: 120.0, i: 0.1, d: 2.0}
+      left_shoulder_yaw_joint:   {p: 80.0,  i: 0.1, d: 1.5}
+      left_elbow_joint:          {p: 50.0,  i: 0.1, d: 1.0}
+      left_wrist_roll_joint:     {p: 1.0,  i: 0.1, d: 0.01}
+      left_wrist_pitch_joint:    {p: 1.0,  i: 0.1, d: 0.01}
+      left_wrist_yaw_joint:      {p: 1.0,  i: 0.1, d: 0.01}
+
+      # Right arm
+      right_shoulder_pitch_joint: {p: 120.0, i: 0.0, d: 2.0}
+      right_shoulder_roll_joint:  {p: 120.0, i: 0.0, d: 2.0}
+      right_shoulder_yaw_joint:   {p: 80.0,  i: 0.0, d: 1.5}
+      right_elbow_joint:          {p: 50.0,  i: 0.0, d: 1.0}
+      right_wrist_roll_joint:     {p: 1.0,  i: 0.0, d: 0.01}
+      right_wrist_pitch_joint:    {p: 1.0,  i: 0.0, d: 0.01}
+      right_wrist_yaw_joint:      {p: 1.0,  i: 0.0, d: 0.01}
+
+      # # Left hand (non-mimic)
+      # L_thumb_proximal_yaw_joint:   {p: 1.0, i: 0.0, d: 0.1}
+      # L_thumb_proximal_pitch_joint: {p: 1.0, i: 0.0, d: 0.1}
+      # L_index_proximal_joint:       {p: 1.0, i: 0.0, d: 0.1}
+      # L_middle_proximal_joint:      {p: 1.0, i: 0.0, d: 0.1}
+      # L_ring_proximal_joint:        {p: 1.0, i: 0.0, d: 0.1}
+      # L_pinky_proximal_joint:       {p: 1.0, i: 0.0, d: 0.1}
+
+      # # Right hand (non-mimic)
+      # R_thumb_proximal_yaw_joint:   {p: 1.0, i: 0.0, d: 0.1}
+      # R_thumb_proximal_pitch_joint: {p: 1.0, i: 0.0, d: 0.1}
+      # R_index_proximal_joint:       {p: 1.0, i: 0.0, d: 0.1}
+      # R_middle_proximal_joint:      {p: 1.0, i: 0.0, d: 0.1}
+      # R_ring_proximal_joint:        {p: 1.0, i: 0.0, d: 0.1}
+      # R_pinky_proximal_joint:       {p: 1.0, i: 0.0, d: 0.1}

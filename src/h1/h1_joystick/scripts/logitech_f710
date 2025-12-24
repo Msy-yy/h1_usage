@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from h1_joystick.libjoypy import CustomJoyControls
+
+def launch_joycontroller():
+
+	jc = CustomJoyControls()
+	jc.execute_program()
+
+if __name__ == '__main__':
+	launch_joycontroller()

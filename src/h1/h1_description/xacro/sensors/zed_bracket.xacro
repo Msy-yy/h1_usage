@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="zed_bracket" params="xyz rpy parent">
+
+        <!-- Ouster Root -->
+        <joint name="zed_bracket_joint" type="fixed">
+            <axis xyz="0 0 1" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+            <parent link="${parent}" />
+            <child link="zed_bracket_link" />
+        </joint>
+
+        <link name="zed_bracket_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://h1_description/meshes/sensors/zed_bracket.dae" />
+                </geometry>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://h1_description/meshes/sensors/zed_bracket.dae" />
+                </geometry>
+            </collision>
+        </link>
+
+    </xacro:macro>
+
+</robot>
