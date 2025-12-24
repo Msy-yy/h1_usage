@@ -291,7 +291,7 @@ ssh -X unitree@192.168.123.164
 
 The default password is:
 ```bash
-123
+Unitree#0408
 ```
 
 ## Teleop 
