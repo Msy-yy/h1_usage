@@ -1,7 +1,7 @@
 # H1/H1-2_carry_box demo
 
 > [!WARNING]
-> Unitree are constantly updating their firmware and at times changing their naming convention which **may** cause breakage in some of the newer firmwares. In that case either submit and issue and/or create a pull request with the correct feature.
+> Unitree are constantly updating the firmware and at times changing naming convention which **may** cause breakage in some of the newer firmwares. In that case either submit and issue and/or create a pull request with the correct feature.
 
 # Table of Contents
 
