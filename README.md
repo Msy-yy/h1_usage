@@ -245,8 +245,6 @@ ros2 launch h1_viz view_robot.launch.py
 | -------------------- | ----------------- | --------       | ---------    |
 | 192.168.123.161      | H1 MCU            | x              | x            |
 | 192.168.123.164      | H1 Auxiliary PC 2 | unitree        | Unitree0408  |
-| 192.168.123.164:9000 | H1 Webserver MBS  | admin          | mybotshop    |
-| 192.168.123.165      | H1 Nvidia BagPack | administrator  | mybotshop    |
 | 192.168.123.120      | Mid360 Lidar      | x              | x            |
 | 192.168.123.20       | Ouster Lidar      | x              | x            |
 
@@ -256,7 +254,7 @@ ros2 launch h1_viz view_robot.launch.py
 
 # Quick Start
 
-Applicable only if qre_h1 repository has been installed. If not please follow the installation instructions.
+Applicable only if h1 repository has been installed. If not please follow the installation instructions.
 
 ## Ethernet Connection
 
